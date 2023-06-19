@@ -1,5 +1,5 @@
 import os
-
+import json
 import openai
 from flask import Flask, redirect, render_template, request, url_for
 
@@ -25,19 +25,27 @@ def index():
 @app.route("/image", methods=("GET", "POST"))
 def image():
     image = ""
+    image_count = 2
+    image_size = "512x512"
     if request.method == "POST":
         image = request.form.get("image", False)
+        image_count = int(request.form.get("image_count", 2))
+        image_size = request.form.get("image_size", "512x512")
+
         response = openai.Image.create(
             prompt=image,
-            n = 1,
-            size = "512x512"
+            n = image_count,
+            size = image_size,
         )
         image_url = response['data'][0]['url']
-        return redirect(url_for("image", result=image_url, prompt=image))
+        # image_url = response # TODO: unable to show more than one image. need to fix.
+        return redirect(url_for("image", result=image_url, prompt=image, count=image_count, size=image_size))
 
     result = request.args.get("result")
     image = request.args.get("prompt", "")
-    return render_template("image.html", result=result, prompt=image)
+    image_count = int(request.args.get("count", 2))
+    image_size = request.args.get("size", "512x512")
+    return render_template("image.html", result=result, prompt=image, count=image_count, size=image_size)
 
 
 def generate_prompt(animal):
