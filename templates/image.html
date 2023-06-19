@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<head>
+  <title>OpenAI Quickstart - Image</title>
+  <link
+    rel="shortcut icon"
+    href="{{ url_for('static', filename='logo_openai.png') }}"
+  />
+  <link rel="stylesheet" href="{{ url_for('static', filename='main.css') }}" />
+</head>
+
+<body>
+  <!-- <img src="{{ url_for('static', filename='logo_openai.png') }}" class="icon" /> -->
+  <a class="logo-link active" href="/image" aria-current="page">
+    <img src="{{ url_for('static', filename='logo_openai.png') }}" class="icon" />
+  </a>
+  <h3>Image Generator</h3>
+  <form action="/image" method="post">
+    <input type="text" name="image" placeholder="Enter an Image Description" value="{{ prompt }}" required />
+    <input type="submit" value="Generate image" />
+  </form>
+  {% if result %}
+  <p class="prompt">Prompt: {{ prompt }}</p>
+  <img class="result" src="{{ result }}" alt="Generated Image">
+  <br>
+  <a class="result" href="{{ result }}" target="_blank">Open Image in New Tab</a>
+  {% endif %}
+</body>
