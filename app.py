@@ -1,7 +1,6 @@
 import os
-import json
 import openai
-from flask import Flask, redirect, render_template, request, url_for
+from flask import Flask, redirect, render_template, request, url_for, json
 
 app = Flask(__name__)
 openai.api_key = os.getenv("OPENAI_API_KEY")
@@ -37,11 +36,12 @@ def image():
             n = image_count,
             size = image_size,
         )
-        image_url = response['data'][0]['url']
-        # image_url = response # TODO: unable to show more than one image. need to fix.
-        return redirect(url_for("image", result=image_url, prompt=image, count=image_count, size=image_size))
-
-    result = request.args.get("result")
+        
+        result = {i: item["url"] for i, item in enumerate(response["data"])}
+        result = json.dumps(result) # * changes json to string. during redirect json was truncated.
+        return redirect(url_for("image", result=result, prompt=image, count=image_count, size=image_size))
+    
+    result = json.loads(request.args.get("result", "ERROR")) # * converts string back to json.
     image = request.args.get("prompt", "")
     image_count = int(request.args.get("count", 2))
     image_size = request.args.get("size", "512x512")

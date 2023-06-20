@@ -15,9 +15,8 @@
   </a>
   <h3>Image Generator</h3>
   <form action="/image" method="post">
-  <!-- <form action="/options" method="post"> -->
     <!-- TODO: only able to show one image. need to fix to show all images -->
-    <!-- <label for="image-count_selection">Number of Images:</label>
+    <label for="image-count_selection">Number of Images:</label>
     <select id="image-count" name="image_count">
       <option value="1" {% if count == 1 %}selected{% endif %}>1</option>
       <option value="2" {% if count == 2 %}selected{% endif %}>2</option>
@@ -30,7 +29,7 @@
       <option value="9" {% if count == 9 %}selected{% endif %}>9</option>
       <option value="10" {% if count == 10 %}selected{% endif %}>10</option>
     </select>
-    <br> -->
+    <br>
     <label for="size_selection">Select image size:</label>
     <select id="image-size" name="image_size">
       <option value="256x256" {% if size == "256x256" %}selected{% endif %}>256x256</option>
@@ -42,10 +41,12 @@
     <input type="submit" value="Generate image" />
   </form>
   {% if result %}
-  <!-- <p class="result">{{ result }}</p> -->
+    <!-- <p class="result">{{ result }}</p> -->
     <p class="prompt">Prompt: {{ prompt }}</p>
-    <a class="result" href="{{ result }}" target="_blank">Open Image in New Tab</a>
-    <img class="result" src="{{ result }}" alt="Generated Image">
-    <br>
+    {% for key, value in result.items() %}
+      <!-- <p class="prompt">value: {{ value }}</p> -->
+      <a class="result" href="{{ value }}" target="_blank">Open Image in New Tab</a>
+      <img class="result" src="{{ value }}" alt="{{ prompt }}">
+    {% endfor %}
   {% endif %}
 </body>
