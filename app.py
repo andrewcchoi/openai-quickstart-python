@@ -41,7 +41,12 @@ def image():
         result = json.dumps(result) # * changes json to string. during redirect json was truncated.
         return redirect(url_for("image", result=result, prompt=image, count=image_count, size=image_size))
     
-    result = json.loads(request.args.get("result", "ERROR")) # * converts string back to json.
+    # * converts string back to json.
+    if request.args.get("result", ""):
+        result = json.loads(request.args.get("result", ""))
+    else:
+        result = ""
+        
     image = request.args.get("prompt", "")
     image_count = int(request.args.get("count", 2))
     image_size = request.args.get("size", "512x512")
