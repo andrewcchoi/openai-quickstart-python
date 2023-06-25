@@ -12,7 +12,7 @@ app.config['MAX_CONTENT_LENGTH'] = 4 * 1000 * 1000
 
 openai.api_key = os.getenv("OPENAI_API_KEY")
 
-ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg'}
+ALLOWED_EXTENSIONS = {'png'}
 
 def allowed_file(filename):
     return '.' in filename and \
