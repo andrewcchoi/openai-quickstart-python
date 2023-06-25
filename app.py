@@ -37,8 +37,8 @@ def index():
 @app.route("/image", methods=("GET", "POST"))
 def image():
     image = ""
-    image_count = 2
-    image_size = "512x512"
+    image_count = 1
+    image_size = "256x256"
     if request.method == "POST":
         image = request.form.get("image", False)
         image_count = int(request.form.get("image_count", 2))
@@ -61,16 +61,16 @@ def image():
         result = ""
         
     image = request.args.get("prompt", "")
-    image_count = int(request.args.get("count", 2))
-    image_size = request.args.get("size", "512x512")
+    image_count = int(request.args.get("count", 1))
+    image_size = request.args.get("size", "256x256")
     return render_template("image.html", result=result, prompt=image, count=image_count, size=image_size)
 
 
 @app.route("/variation", methods=("GET", "POST"))
 def variation():
     file = ""
-    image_count = 2
-    image_size = "512x512"
+    image_count = 1
+    image_size = "256x256"
 
     if request.method == "POST":
         if 'file' not in request.files:
