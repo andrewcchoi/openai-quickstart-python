@@ -43,10 +43,10 @@
   {% if result %}
     <!-- <p class="result">{{ result }}</p> -->
     <p class="prompt">Prompt: {{ prompt }}</p>
-    {% for key, value in result.items() %}
+    {% for key, url in result.items() %}
       <!-- <p class="prompt">value: {{ value }}</p> -->
-      <a class="result" href="{{ value }}" target="_blank">Open Image in New Tab</a>
-      <img class="result" src="{{ value }}" alt="{{ prompt }}">
+      <a class="result" href="{{ url }}" target="_blank">Open Image in New Tab</a>
+      <img class="result" src="{{ url }}" alt="{{ prompt }}">
     {% endfor %}
   {% endif %}
 </body>
