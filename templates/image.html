@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <head>
-  <title>OpenAI Quickstart - Image</title>
+  <title>OpenAI Quickstart - Image Generator</title>
   <link
     rel="shortcut icon"
     href="{{ url_for('static', filename='logo_openai.png') }}"
@@ -44,8 +44,8 @@
     <p class="prompt">Prompt: {{ prompt }}</p>
     {% for key, url in result.items() %}
     <!-- <p class="prompt">url: {{ url }}</p> -->
-    <a class="result" href="{{ url }}" target="_blank">Open Image in New Tab</a>
-    <img class="result" src="{{ url }}" alt="{{ prompt }}">
+    <a class="generator-result" href="{{ url }}" target="_blank">Open Image in New Tab</a>
+    <img class="generator-result" src="{{ url }}" alt="{{ prompt }}">
     {% endfor %}
   {% endif %}
 </body>
