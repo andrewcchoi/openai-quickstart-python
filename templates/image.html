@@ -15,7 +15,6 @@
   </a>
   <h3>Image Generator</h3>
   <form action="/image" method="post">
-    <!-- TODO: only able to show one image. need to fix to show all images -->
     <label for="image-count_selection">Number of Images:</label>
     <select id="image-count" name="image_count">
       <option value="1" {% if count == 1 %}selected{% endif %}>1</option>
@@ -43,10 +42,10 @@
   {% if result %}
     <!-- <p class="result">{{ result }}</p> -->
     <p class="prompt">Prompt: {{ prompt }}</p>
-    {% for key, value in result.items() %}
-      <!-- <p class="prompt">value: {{ value }}</p> -->
-      <a class="result" href="{{ value }}" target="_blank">Open Image in New Tab</a>
-      <img class="result" src="{{ value }}" alt="{{ prompt }}">
+    {% for key, url in result.items() %}
+    <!-- <p class="prompt">url: {{ url }}</p> -->
+    <a class="result" href="{{ url }}" target="_blank">Open Image in New Tab</a>
+    <img class="result" src="{{ url }}" alt="{{ prompt }}">
     {% endfor %}
   {% endif %}
 </body>
