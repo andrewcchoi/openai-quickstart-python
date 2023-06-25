@@ -41,8 +41,8 @@
   {% if result %}
     <p class="prompt">Prompt: {{ prompt }}</p>
     {% for item in result %}
-      <a class="result" href="{{ item['url'] }}" target="_blank">Open Image in New Tab</a>
-      <img class="result" src="{{ item['url'] }}" alt="{{ prompt }}">
+      <a class="class-result" href="{{ item['url'] }}" target="_blank">Open Image in New Tab</a>
+      <img class="class-result" src="{{ item['url'] }}" alt="{{ prompt }}">
     {% endfor %}
   {% endif %}
 </body>
