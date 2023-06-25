@@ -59,18 +59,15 @@ def image():
             size = image_size,
         )
         
-        # result = {i: item["url"] for i, item in enumerate(response["data"])}
-        # result = json.dumps(result) # * changes json to string. during redirect json was truncated.
         result = artAI(response) # * stores openai object containing urls in class.
         return redirect(url_for("image", result=result.url_object, prompt=image, count=image_count, size=image_size))
     
-    # # * converts string back to json.
+    # # * class object converted to string, convert string back to json.
     if request.args.get("result", ""):
         result = json.loads(request.args.get("result", ""))["data"]
     else:
         result = ""
     
-    print(f"{result=}")
     image = request.args.get("prompt", "")
     image_count = int(request.args.get("count", 2))
     image_size = request.args.get("size", "512x512")
