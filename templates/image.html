@@ -43,9 +43,11 @@
     <!-- <p class="result">{{ result }}</p> -->
     <p class="prompt">Prompt: {{ prompt }}</p>
     {% for key, url in result.items() %}
-    <!-- <p class="prompt">url: {{ url }}</p> -->
-    <a class="generator-result" href="{{ url }}" target="_blank">Open Image in New Tab</a>
-    <img class="generator-result" src="{{ url }}" alt="{{ prompt }}">
+      <!-- <p class="prompt">url: {{ url }}</p> -->
+      <a class="generator-result" href="{{ url }}" target="_blank">Open Image in New Tab</a>
+      <a class="generator-result" href="{{ url }}" target="_blank" download>
+        <img class="generator-result" src="{{ url }}" alt="{{ prompt }}">
+      </a>
     {% endfor %}
   {% endif %}
 </body>
