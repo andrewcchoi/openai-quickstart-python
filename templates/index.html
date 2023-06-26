@@ -1,11 +1,19 @@
 <!DOCTYPE html>
 <head>
-  <title>OpenAI Quickstart</title>
+  <title>OpenAI Quickstart - Pet Name Generator</title>
   <link
     rel="shortcut icon"
     href="{{ url_for('static', filename='dog.png') }}"
   />
   <link rel="stylesheet" href="{{ url_for('static', filename='main.css') }}" />
+  <nav>
+    <h1>ChoiAI</h1>
+    <ul>
+      <li><a href="{{ url_for('index') }}">Pet Name Generator</a>
+      <li><a href="{{ url_for('image') }}">Image Generator</a>
+      <li><a href="{{ url_for('variation') }}">Image Variation</a>
+    </ul>
+  </nav>
 </head>
 
 <body>

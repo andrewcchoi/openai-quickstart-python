@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<head>
+  <title>OpenAI Quickstart - Image Generator</title>
+  <link
+    rel="shortcut icon"
+    href="{{ url_for('static', filename='logo_openai.png') }}"
+  />
+  <link rel="stylesheet" href="{{ url_for('static', filename='main.css') }}" />
+  <nav>
+    <h1>ChoiAI</h1>
+    <ul>
+      <li><a href="{{ url_for('index') }}">Pet Name Generator</a>
+      <li><a href="{{ url_for('image') }}">Image Generator</a>
+      <li><a href="{{ url_for('variation') }}">Image Variation</a>
+    </ul>
+  </nav>
+</head>
+
+<body>
+  <!-- <img src="{{ url_for('static', filename='logo_openai.png') }}" class="icon" /> -->
+  <a class="logo-link active" href="/image" aria-current="page">
+    <img src="{{ url_for('static', filename='logo_openai.png') }}" class="icon" />
+  </a>
+  <h3>Image Generator</h3>
+  <form action="/image" method="post">
+    <label for="image-count_selection">Number of Images:</label>
+    <select id="image-count" name="image_count">
+      <option value="1" {% if count == 1 %}selected{% endif %}>1</option>
+      <option value="2" {% if count == 2 %}selected{% endif %}>2</option>
+      <option value="3" {% if count == 3 %}selected{% endif %}>3</option>
+      <option value="4" {% if count == 4 %}selected{% endif %}>4</option>
+      <option value="5" {% if count == 5 %}selected{% endif %}>5</option>
+      <option value="6" {% if count == 6 %}selected{% endif %}>6</option>
+      <option value="7" {% if count == 7 %}selected{% endif %}>7</option>
+      <option value="8" {% if count == 8 %}selected{% endif %}>8</option>
+      <option value="9" {% if count == 9 %}selected{% endif %}>9</option>
+      <option value="10" {% if count == 10 %}selected{% endif %}>10</option>
+    </select>
+    <br>
+    <label for="size_selection">Select image size:</label>
+    <select id="image-size" name="image_size">
+      <option value="256x256" {% if size == "256x256" %}selected{% endif %}>256x256</option>
+      <option value="512x512" {% if size == "512x512" %}selected{% endif %}>512x512</option>
+      <option value="1024x1024" {% if size == "1024x1024" %}selected{% endif %}>1024x1024</option>
+    </select>
+    <br>
+    <input type="text" name="image" placeholder="Enter an Image Description" value="{{ prompt }}" required />
+    <input type="submit" value="Generate image" />
+  </form>
+  {% if result %}
+    <!-- <p class="result">{{ result }}</p> -->
+    <p class="prompt">Prompt: {{ prompt }}</p>
+    {% for key, url in result.items() %}
+      <!-- <p class="prompt">url: {{ url }}</p> -->
+      <a class="generator-result" href="{{ url }}" target="_blank">Open Image in New Tab</a>
+      <a class="generator-result" href="{{ url }}" target="_blank" download>
+        <img class="generator-result" src="{{ url }}" alt="{{ prompt }}">
+      </a>
+    {% endfor %}
+  {% endif %}
+</body>
