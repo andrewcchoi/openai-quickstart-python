@@ -17,7 +17,6 @@
 </head>
 
 <body>
-  <!-- <img src="{{ url_for('static', filename='logo_openai.png') }}" class="icon" /> -->
   <a class="logo-link active" href="/image" aria-current="page">
     <img src="{{ url_for('static', filename='logo_openai.png') }}" class="icon" />
   </a>
@@ -48,14 +47,10 @@
     <input type="submit" value="Generate image" />
   </form>
   {% if result %}
-    <!-- <p class="result">{{ result }}</p> -->
     <p class="prompt">Prompt: {{ prompt }}</p>
-    {% for key, url in result.items() %}
-      <!-- <p class="prompt">url: {{ url }}</p> -->
-      <a class="generator-result" href="{{ url }}" target="_blank">Open Image in New Tab</a>
-      <a class="generator-result" href="{{ url }}" target="_blank" download>
-        <img class="generator-result" src="{{ url }}" alt="{{ prompt }}">
-      </a>
+    {% for item in result %}
+      <a class="class-result" href="{{ item['url'] }}" target="_blank">Open Image in New Tab</a>
+      <img class="class-result" src="{{ item['url'] }}" alt="{{ prompt }}">
     {% endfor %}
   {% endif %}
 </body>

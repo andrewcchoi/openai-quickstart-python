@@ -19,6 +19,28 @@ def allowed_file(filename):
            filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
 
 
+class artAI:
+    """
+    A class representing data related to AI art.
+
+    Attributes:
+    -----------
+    url_object : openai.openai_object
+        The OpenAI object contains the url(s) for the art generated.
+    """
+
+    def __init__(self, url_object: openai.openai_object) -> None:
+        """
+        Constructor method for the artAI class.
+
+        Parameters:
+        -----------
+        url_object : openai.openai_object
+            The OpenAI object contains the url(s) for the art generated.
+        """
+        self.url_object = url_object
+
+
 @app.route("/", methods=("GET", "POST"))
 def index():
     if request.method == "POST":
@@ -50,16 +72,15 @@ def image():
             size = image_size,
         )
         
-        result = {i: item["url"] for i, item in enumerate(response["data"])}
-        result = json.dumps(result) # * changes json to string. during redirect json was truncated.
-        return redirect(url_for("image", result=result, prompt=image, count=image_count, size=image_size))
+        result = artAI(response) # * stores openai object containing urls in class.
+        return redirect(url_for("image", result=result.url_object, prompt=image, count=image_count, size=image_size))
     
-    # * converts string back to json.
+    # # * class object converted to string, convert string back to json.
     if request.args.get("result", ""):
-        result = json.loads(request.args.get("result", ""))
+        result = json.loads(request.args.get("result", ""))["data"]
     else:
         result = ""
-        
+    
     image = request.args.get("prompt", "")
     image_count = int(request.args.get("count", 1))
     image_size = request.args.get("size", "256x256")
