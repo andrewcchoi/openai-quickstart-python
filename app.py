@@ -1,9 +1,22 @@
 import os
 import openai
-from flask import Flask, redirect, render_template, request, url_for, json
+
+from io import BytesIO
+from flask import Flask, flash, redirect, render_template, request, url_for, json
 
 app = Flask(__name__)
+# app.config['SESSION_TYPE'] = 'memcached'
+# app.config['SESSION_TYPE'] = 'filesystem'
+app.config['SECRET_KEY'] = 'super secret key'
+app.config['MAX_CONTENT_LENGTH'] = 4 * 1000 * 1000
+
 openai.api_key = os.getenv("OPENAI_API_KEY")
+
+ALLOWED_EXTENSIONS = {'png'}
+
+def allowed_file(filename):
+    return '.' in filename and \
+           filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
 
 
 class artAI:
@@ -46,8 +59,8 @@ def index():
 @app.route("/image", methods=("GET", "POST"))
 def image():
     image = ""
-    image_count = 2
-    image_size = "512x512"
+    image_count = 1
+    image_size = "256x256"
     if request.method == "POST":
         image = request.form.get("image", False)
         image_count = int(request.form.get("image_count", 2))
@@ -69,9 +82,59 @@ def image():
         result = ""
     
     image = request.args.get("prompt", "")
-    image_count = int(request.args.get("count", 2))
-    image_size = request.args.get("size", "512x512")
+    image_count = int(request.args.get("count", 1))
+    image_size = request.args.get("size", "256x256")
     return render_template("image.html", result=result, prompt=image, count=image_count, size=image_size)
+
+
+@app.route("/variation", methods=("GET", "POST"))
+def variation():
+    file = ""
+    image_count = 1
+    image_size = "256x256"
+
+    if request.method == "POST":
+        if 'file' not in request.files:
+            flash('No file part')
+            return redirect(request.url)
+        
+        file = request.files['file']
+        print(f"{file=}")
+        
+        # with open(file, "rb") as f:
+        #     print(f.read())
+        # If the user does not select a file, the browser submits an
+        # empty file without a filename.
+        if file.filename == '':
+            flash('No selected file')
+            return redirect(request.url)
+
+        image_count = int(request.form.get("image_count", 1))
+        image_size = request.form.get("image_size", "256x256")
+        filename = file.filename
+
+        byte_stream: BytesIO = file
+        byte_array = byte_stream.read()
+        # byte_array = byte_stream.getvalue()
+        response = openai.Image.create_variation(
+            image=byte_array,
+            n=image_count,
+            size=image_size
+        )
+        
+        result = json.dumps(response["data"]) # * changes json to string. during redirect json was truncated.
+        return redirect(url_for("variation", result=result, filename=filename, count=image_count, size=image_size))
+    
+    # * converts string back to json.
+    if request.args.get("result", ""):
+        result = json.loads(request.args.get("result", ""))
+    else:
+        result = ""
+        
+    file = request.args.get("filename", "")
+    image_count = int(request.args.get("count", 1))
+    image_size = request.args.get("size", "256x256")
+    return render_template("variation.html", result=result, filename=file, count=image_count, size=image_size)
 
 
 def generate_prompt(animal):

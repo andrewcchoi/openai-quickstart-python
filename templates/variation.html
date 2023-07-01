@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <head>
-  <title>OpenAI Quickstart - Image Generator</title>
+  <title>OpenAI Quickstart - Image Variation</title>
   <link
     rel="shortcut icon"
     href="{{ url_for('static', filename='logo_openai.png') }}"
@@ -17,11 +17,12 @@
 </head>
 
 <body>
-  <a class="logo-link active" href="/image" aria-current="page">
+  <!-- <img src="{{ url_for('static', filename='logo_openai.png') }}" class="icon" /> -->
+  <a class="logo-link active" href="/variation" aria-current="page">
     <img src="{{ url_for('static', filename='logo_openai.png') }}" class="icon" />
   </a>
-  <h3>Image Generator</h3>
-  <form action="/image" method="post">
+  <h3>Image Variation</h3>
+  <form action="/variation" method="post" enctype=multipart/form-data>
     <label for="image-count_selection">Number of Images:</label>
     <select id="image-count" name="image_count">
       <option value="1" {% if count == 1 %}selected{% endif %}>1</option>
@@ -43,16 +44,20 @@
       <option value="1024x1024" {% if size == "1024x1024" %}selected{% endif %}>1024x1024</option>
     </select>
     <br>
-    <input type="text" name="image" placeholder="Enter an Image Description" value="{{ prompt }}" required />
-    <input type="submit" value="Generate image" />
+    <label for="image-upload">Choose an image (png):</label>
+    <!-- <input type="file" placeholder="Upload Image" id="image-upload" name="image" accept="image/png, image/jpg, image/jpeg"> -->
+    <input type="file" placeholder="Upload Image" id="image-upload" name="file" accept="image/png">
+    <br>
+    <input type="submit">
   </form>
   {% if result %}
-    <p class="prompt">Prompt: {{ prompt }}</p>
+    <!-- <p class="result">{{ result }}</p> -->
+    <p class="filename">Filename: {{ filename }}</p>
     {% for item in result %}
-      <a class="class-result" href="{{ item['url'] }}" target="_blank">Open Image in New Tab</a>
-      <a class="generator-result" href="{{ item['url'] }}" target="_blank" download>
-        <img class="generator-result" src="{{ item['url'] }}" alt="{{ prompt }}">
-      </a>
+    <!-- <p class="filename">url: {{ url }}</p> -->
+    <a class="variation-result" href="{{ item['url'] }}" target="_blank">
+      <img class="variation-result" src="{{ item['url'] }}" alt="{{ filename }}">
+    </a>
     {% endfor %}
   {% endif %}
 </body>
