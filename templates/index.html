@@ -24,6 +24,7 @@
     <input type="submit" value="Generate names" />
   </form>
   {% if result %}
-  <div class="result">{{ result }}</div>
+    <p class="prompt"><strong>Prompt:</strong> {{ prompt.capitalize() }}</p>
+    <div class="result">{{ result }}</div>
   {% endif %}
 </body>

@@ -50,10 +50,11 @@ def index():
             prompt=generate_prompt(animal),
             temperature=0.6,
         )
-        return redirect(url_for("index", result=response.choices[0].text))
-
+        return redirect(url_for("index", result=response.choices[0].text, prompt=animal))
+    
+    animal = request.args.get("prompt", "")
     result = request.args.get("result")
-    return render_template("index.html", result=result)
+    return render_template("index.html", result=result, prompt=animal)
 
 
 @app.route("/image", methods=("GET", "POST"))
@@ -63,7 +64,7 @@ def image():
     image_size = "256x256"
     if request.method == "POST":
         image = request.form.get("image", False)
-        image_count = int(request.form.get("image_count", 2))
+        image_count = int(request.form.get("image_count", 1))
         image_size = request.form.get("image_size", "512x512")
 
         response = openai.Image.create(
@@ -99,10 +100,7 @@ def variation():
             return redirect(request.url)
         
         file = request.files['file']
-        print(f"{file=}")
         
-        # with open(file, "rb") as f:
-        #     print(f.read())
         # If the user does not select a file, the browser submits an
         # empty file without a filename.
         if file.filename == '':
@@ -115,7 +113,6 @@ def variation():
 
         byte_stream: BytesIO = file
         byte_array = byte_stream.read()
-        # byte_array = byte_stream.getvalue()
         response = openai.Image.create_variation(
             image=byte_array,
             n=image_count,
@@ -138,13 +135,11 @@ def variation():
 
 
 def generate_prompt(animal):
-    return """Suggest three names for an animal that is a superhero.
+    return f"""Suggest three names for an animal that is a superhero.
 
 Animal: Cat
 Names: Captain Sharpclaw, Agent Fluffball, The Incredible Feline
 Animal: Dog
 Names: Ruff the Protector, Wonder Canine, Sir Barks-a-Lot
-Animal: {}
-Names:""".format(
-        animal.capitalize()
-    )
+Animal: {animal.capitalize()}
+Names:"""
