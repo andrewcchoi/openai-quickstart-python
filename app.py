@@ -50,10 +50,11 @@ def index():
             prompt=generate_prompt(animal),
             temperature=0.6,
         )
-        return redirect(url_for("index", result=response.choices[0].text))
-
+        return redirect(url_for("index", result=response.choices[0].text, prompt=animal))
+    
+    animal = request.args.get("prompt", "")
     result = request.args.get("result")
-    return render_template("index.html", result=result)
+    return render_template("index.html", result=result, prompt=animal)
 
 
 @app.route("/image", methods=("GET", "POST"))
