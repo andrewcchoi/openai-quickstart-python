@@ -49,7 +49,7 @@
   {% if result %}
     <p class="prompt">Prompt: {{ prompt }}</p>
     {% for item in result %}
-      <a class="class-result" href="{{ item['url'] }}" target="_blank">Open Image in New Tab</a>
+      <a class="generator-result" href="{{ item['url'] }}" target="_blank">Open Image in New Tab</a>
       <a class="generator-result" href="{{ item['url'] }}" target="_blank" download>
         <img class="generator-result" src="{{ item['url'] }}" alt="{{ prompt }}">
       </a>
