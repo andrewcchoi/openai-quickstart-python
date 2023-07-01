@@ -45,16 +45,13 @@
     </select>
     <br>
     <label for="image-upload">Choose an image (png):</label>
-    <!-- <input type="file" placeholder="Upload Image" id="image-upload" name="image" accept="image/png, image/jpg, image/jpeg"> -->
     <input type="file" placeholder="Upload Image" id="image-upload" name="file" accept="image/png">
     <br>
     <input type="submit">
   </form>
   {% if result %}
-    <!-- <p class="result">{{ result }}</p> -->
     <p class="filename">Filename: {{ filename }}</p>
     {% for item in result %}
-    <!-- <p class="filename">url: {{ url }}</p> -->
     <a class="variation-result" href="{{ item['url'] }}" target="_blank">
       <img class="variation-result" src="{{ item['url'] }}" alt="{{ filename }}">
     </a>
